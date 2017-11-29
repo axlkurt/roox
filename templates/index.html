@@ -1,0 +1,97 @@
+<!-- index.html -->
+
+{% extends "base.html" %}
+{% block title %}迷你小商铺{% endblock %}
+{% block content %}
+
+
+
+<div class="container-fluid" align=center>
+
+{% if message %}
+	<div class="alert alert-warning">{{message}}</div>
+{% endif %}
+
+<div class="row">
+	<div class="col-md-12">
+		<div class="panel panel-default">
+			<div class="panel-heading" align="center">
+				<h3>欢迎光临迷你小商铺<br> {{ category.name | default:"全部商品" }}</h3>
+				{% if user.is_authenticated %}
+					{% if user.socialaccount_set.all.0.extra_data.name %}
+						{{ user.socialaccount_set.all.0.extra_data.name }}<br/>
+					<img src="{{ user.socialaccount_set.all.0.get_avatar_url }}" width='100'>
+					{% else %}
+						Welcome: {{ user.username}}
+					{% endif %}
+				{% else %}
+					<p>欢迎使用Face book 登录</p>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+{# {% load account %} #}
+
+<div class="row">
+{% for product in products %}
+	
+		<div class="col-sm-6 col-xs-12 col-md-3">
+			<div class="thumbnail">
+				<img src="{{ product.image.url }}" width="70%">
+				<div class="caption">
+					<h4><a href="{% url "product-url" product.id %}">{{ product.name }}</a></h4>
+					<p>价格:{{ product.price }}元</p>
+					<p>库存:{{ product.stock}}</p>
+					<p>{{ product.description|center:"500" }}</p>
+					<button class='btn btn-info'><a href='{% url "additem-url" product.id 1 %}'>放入购物车</a></button>
+				</div>
+			</div>
+		</div>
+	
+{% empty %}
+	<div class="row">
+	<div class="col-sm-12" align="center">
+		<h3>此分类目前没有任何产品</h3>
+	</div>
+	</div>
+{% endfor %}
+</div>
+
+<div class="row">
+	
+	{% if products.has_previous %}
+		<ul class="pager">
+		<li >
+			<a href="/?p={{ products.previous_page_number }}">目前是第{{ products.number }}页  上一页</a>
+		</li>	
+		</ul>	
+	{% endif %}
+	{% if products.has_next %}
+		<ul class="pager">
+		<li>
+			<a href="/?p={{ products.next_page_number }}">目前是第{{ products.number }}页  下一页</a>
+		</li>
+		</ul>
+	{% endif %}
+</div>
+
+
+
+
+{% if cart.count > 0 %}
+	<em>当前购物车中有{{ cart.count }}款产品</em>
+{% else %}
+	<p>当前购物车中没有产品</p>
+{% endif %}
+
+
+</div>
+
+
+
+
+{% endblock %}
