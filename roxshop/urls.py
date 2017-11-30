@@ -35,6 +35,7 @@ urlpatterns = [
 
     url(r'^order/$', views.order),
     url(r'^myorders/$', views.my_orders),
+    url(r'^tesssssst/$',views.fff)
 ]
 
 
