@@ -4,7 +4,7 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from cart.cart import Cart 
 
 # Create your views here.
-# laishishi dierge 
+
 
 def index(request, cat_id=0):
 
